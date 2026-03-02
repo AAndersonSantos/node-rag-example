@@ -1,5 +1,6 @@
 # Usando imagem oficial do Node
-FROM node:20-alpine
+# FROM node:20-alpine
+FROM node:20-slim
 
 # Diretório dentro do container
 WORKDIR /app

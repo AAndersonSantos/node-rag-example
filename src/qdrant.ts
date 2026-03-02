@@ -16,7 +16,7 @@ export async function createCollection() {
   if (!exists) {
     await qdrant.createCollection(COLLECTION_NAME, {
       vectors: {
-        size: 4,
+        size: 384,
         distance: "Cosine"
       }
     });

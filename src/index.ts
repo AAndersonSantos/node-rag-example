@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import { qdrant, createCollection, COLLECTION_NAME } from "./qdrant";
+import { generateEmbedding } from "./embedding";
 
 const app = express();
 app.use(express.json());
@@ -8,7 +9,9 @@ app.use(express.json());
 dotenv.config();
 
 app.post("/insert", async (req, res) => {
-  const { id, vector, texto } = req.body;
+  const { id, texto } = req.body;
+
+  const vector = await generateEmbedding(texto);
 
   await qdrant.upsert(COLLECTION_NAME, {
     points: [
@@ -24,7 +27,9 @@ app.post("/insert", async (req, res) => {
 });
 
 app.post("/search", async (req, res) => {
-  const { vector } = req.body;
+  const { texto } = req.body;
+
+  const vector = await generateEmbedding(texto);
 
   const result = await qdrant.search(COLLECTION_NAME, {
     vector,
