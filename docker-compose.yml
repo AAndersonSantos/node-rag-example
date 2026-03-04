@@ -8,14 +8,21 @@ services:
       - qdrant_data:/qdrant/storage
 
   api:
-      build: .
+      build:
+        context: .
+        dockerfile: Dockerfile.dev
       container_name: qdrant-api
       ports:
         - "3000:3000"
+      env_file:
+        - .env
       depends_on:
         - qdrant
       environment:
         - QDRANT_URL=http://qdrant:6333
+      volumes:
+        - .:/app
+        - /app/node_modules
 
 volumes:
   qdrant_data:
